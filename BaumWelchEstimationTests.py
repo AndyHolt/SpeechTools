@@ -62,6 +62,36 @@ class BaumWelchEstimationTests(unittest.TestCase):
     self.assertRaises(BaumWelchInputError, BaumWelch,
                       transitionMatrix, outputProbabilities, observationSequence)
 
+  def test_bGeneration(self):
+    """ Check that b generation is giving something sensible """
+    transitionMatrix = array([[0.7, 0.3, 0.0],
+                              [0.6, 0.4, 0.0],
+                              [0.0, 0.8, 0.2]])
+    outputProbabilities = array([[0.0, 0.5],
+                                 [1.0, 0.5]])
+    observationSequence = array([[0.2, 0.1, 0.1, 0.5, 0.6, 0.8, 0.7]])
+
+    BW = BaumWelch(transitionMatrix, outputProbabilities, observationSequence)
+    BW.outputGenerationProbability()
+
+    expectedShape = (2, 7)
+
+    self.assertEqual(BW.b.shape, expectedShape)
+
+
+  def test_gaussianDist(self):
+    """Check gaussian function returns correct results"""
+    transitionMatrix = array([[0.7, 0.3, 0.0],
+                              [0.6, 0.4, 0.0],
+                              [0.0, 0.8, 0.2]])
+    outputProbabilities = array([[0.0, 0.5],
+                                 [1.0, 0.5]])
+    observationSequence = array([[0.2, 0.1, 0.1, 0.5, 0.6, 0.8, 0.7]])
+
+    BW = BaumWelch(transitionMatrix, outputProbabilities, observationSequence)
+
+    self.assertAlmostEqual(BW.gaussianDist(0,0,1), 0.39894228)
+
 
 if __name__ == '__main__':
     unittest.main()
