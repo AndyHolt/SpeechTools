@@ -15,7 +15,6 @@ class BaumWelch(object):
 
   Estimate the most probable state sequence for an HMM given the utterance output.
   """
-
   def __init__(self, transitionMatrix, outputProbabilities, observationSequence):
     """
     Set up the HMM.
@@ -46,7 +45,7 @@ class BaumWelch(object):
       raise BaumWelchInputError('Observation sequence should be row vector')
 
 
-class BaumWelchInputError(exception):
+class BaumWelchInputError(Exception):
   """
   Exceptions for input errors to BW class
   """
