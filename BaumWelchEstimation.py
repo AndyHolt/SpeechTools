@@ -194,6 +194,27 @@ class BaumWelch(object):
     for s in range(self.T, 0, -1):
       self.mostLikelyPath[0,s] = self.traceback[self.mostLikelyPath[0,s+1]-1, s]
 
+  def viterbiMeansEstimate(self):
+    """
+    Update the estimate of the means by most likely state sequence
+    """
+    for i in range(self.noOfEmmittingStates):
+      self.outputProbabilities[i,0] = \
+                self.observationSequence[0, nonzero(self.mostLikelyPath ==
+                                                    i+1)[1]-1].mean()
+
+  def BWMeansEstimate(self):
+    """
+    Estimate means by computing weighted average from L values.
+    """
+    for i in range(self.noOfEmmittingStates):
+      self.outputProbabilities[i,0] = ((self.L[i,:] *
+                                        self.observationSequence).sum() /
+                                       self.L[i,:].sum())
+
+
+
+
   def gaussianDist(self, x, mu, var):
     """
     Return the probability at point x for a gaussian/normal distribuion of given parameters
